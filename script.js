@@ -1,16 +1,4 @@
-/*
-var tip = d3.tip()
-    .attr('class', 'd3-tip')
-    .offset([-10, 0])
-    .html(function (d) {
-        return "Hello Tip";
-    })
 
-var svgSelection = bodySelection.append("svg")
-    .attr("width", 200)
-    .attr("height", 200);
-svgSelection.call(tip);
-*/
 let cities;
 
 
@@ -38,7 +26,7 @@ d3.csv('cities.csv', d3.autoType).then(data=>{
         .data(cities)
         .enter()
         .append('circle')
-        .attr('fill', 'pink')
+        .attr('fill', 'skyblue')
         .attr('cx', (d,i) => d.x)
         .attr('cy', (d,i) => d.y)
         .attr('r', (d,i) => {
@@ -61,8 +49,8 @@ d3.csv('cities.csv', d3.autoType).then(data=>{
         })
         .attr('font-size', 11)
         .attr('text-anchor', 'middle')
-        .attr('dx', -10)
-        .attr('dy', +15);
+        .attr('dx', 8)
+        .attr('dy', -10);
 })
 
 let buildings;
@@ -72,7 +60,7 @@ d3.csv('buildings.csv', d3.autoType).then(data =>{
   buildings.sort((a, b) => parseInt(b.height_ft) - parseInt(a.height_ft));
   console.log("buildings by height", buildings);
 
-  const bar_height = 35;
+  const bar_height = 40;
   const right_margin = 200;
 
   const svg = d3
@@ -88,26 +76,25 @@ d3.csv('buildings.csv', d3.autoType).then(data =>{
     .append('rect')
     .attr('height', bar_height)
     .attr('width', (d, i) => d.height_px)
-    .attr('fill', 'skyblue')
+    .attr('fill', 'orange')
     .attr('x', right_margin)
     .attr('y', (d, i) => (bar_height+8)*i)
-    .on('click', d=>{
-        let data = d.path[0].__data__;
+    .on('click', (d,i)=>{
         d3.select('.image')
-            .attr('src', (d,i) => 'img/'+data.image);
+            .attr('src', 'img/'+i.image);
         d3.select('.building')
-            .text(d=>data.building)
+            .text(i.building)
             .attr('font-size', 100);
         d3.select('.country')
-            .text(d =>data.country);
+            .text(i.country);
         d3.select('.city')
-            .text(d=>data.city);
+            .text(i.city);
         d3.select('.height')
-            .text(d => data.height_ft +"ft");
+            .text(i.height_ft +"ft");
         d3.select('.floors')
-            .text(d =>data.floors);
+            .text(i.floors);
         d3.select('.completed')
-            .text(d => data.completed);
+            .text(i.completed);
     });
  
     let bar_labels = svg
@@ -116,7 +103,8 @@ d3.csv('buildings.csv', d3.autoType).then(data =>{
         .enter()
         .append('text')
         .text((d,i) => d.building)
-        .attr('y',(d,i) => (bar_height+9)*i+bar_height/2)
+        .attr('x', 5)
+        .attr('y',(d,i) => (bar_height+8)*i+ bar_height/2)
         .attr('font-size',13);
  
     let height_labels = svg
@@ -125,9 +113,10 @@ d3.csv('buildings.csv', d3.autoType).then(data =>{
       .enter()
       .append('text')
       .text((d, i) => d.height_ft + 'ft')
-      .attr('x', (d, i) => right_margin + d.height_px)
+      .attr('x', (d, i) => right_margin + d.height_px-10)
       .attr('y', (d, i) => (bar_height + 8) * i + bar_height / 2)
       .attr('text-anchor', 'end')
+      .attr('fill','white')
       .attr('font-size', 13);
 
 })
